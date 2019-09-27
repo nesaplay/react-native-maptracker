@@ -9,6 +9,10 @@ const authReducer = (state, action) => {
       return { ...state, errorMessage: action.payload };
     case 'signup':
       return { ...state, token: action.payload, errorMessage: '' };
+    case 'signin':
+      return { ...state, token: action.payload, errorMessage: '' };
+    case 'clear_error_message':
+      return { ...state, errorMessage: '' };
     default:
       return state;
   }
@@ -28,8 +32,23 @@ const actions = {
       dispatch({ type: 'add_error', payload: 'Something went wrong with signup!' });
     }
   },
-  signin: dispatch => ({ email, password }) => {},
+  signin: dispatch => async ({ email, password }) => {
+    try {
+      const response = await trackerAPI.post('/signin', { email, password });
+      const token = response.data.token;
+
+      await AsyncStorage.setItem('token', token);
+      dispatch({ type: 'signin', payload: token });
+
+      navigate('TrackList');
+    } catch (err) {
+      dispatch({ type: 'add_error', payload: 'Something went wrong with signin!' });
+    }
+  },
   signout: dispatch => () => {},
+  clearErrorMessage: dispatch => () => {
+    dispatch({ type: 'clear_error_message' });
+  }
 };
 
 const initialState = { token: null, errorMessage: '' };
