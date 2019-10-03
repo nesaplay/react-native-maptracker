@@ -1,18 +1,19 @@
-import React from "react";
-import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
-import { createBottomTabNavigator } from "react-navigation-tabs";
+import React from 'react';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import AccountScreen from "./src/screens/AccountScreen";
-import SigninScreen from "./src/screens/SigninScreen";
-import SignupScreen from "./src/screens/SignupScreen";
-import TrackCreateScreen from "./src/screens/TrackCreateScreen";
-import TrackDetailScreen from "./src/screens/TrackDetailScreen";
-import TrackListScreen from "./src/screens/TrackListScreen";
-import LoadingScreen from "./src/screens/LoadingScreen";
+import AccountScreen from './src/screens/AccountScreen';
+import SigninScreen from './src/screens/SigninScreen';
+import SignupScreen from './src/screens/SignupScreen';
+import TrackCreateScreen from './src/screens/TrackCreateScreen';
+import TrackDetailScreen from './src/screens/TrackDetailScreen';
+import TrackListScreen from './src/screens/TrackListScreen';
+import LoadingScreen from './src/screens/LoadingScreen';
 
-import { Provider as AuthProvider } from "./src/context/AuthContext";
-import { setNavigator } from "./src/navigationRef";
+import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as LocationProvider } from './src/context/LocationContext';
+import { setNavigator } from './src/navigationRef';
 
 const switchNavigatior = createSwitchNavigator({
   Loading: LoadingScreen,
@@ -33,7 +34,9 @@ const switchNavigatior = createSwitchNavigator({
 const App = createAppContainer(switchNavigatior);
 
 export default () => (
-  <AuthProvider>
-    <App ref={setNavigator} />
-  </AuthProvider>
+  <LocationProvider>
+    <AuthProvider>
+      <App ref={setNavigator} />
+    </AuthProvider>
+  </LocationProvider>
 );
