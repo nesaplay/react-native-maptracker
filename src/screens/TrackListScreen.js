@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import { ListItem } from 'react-native-elements';
 import { Context as TrackContext } from '../context/TrackContext';
+import { MaterialIcons } from "@expo/vector-icons";
 
 const TrackListScreen = ({ navigation }) => {
   const { fetchTracks, state } = useContext(TrackContext);
@@ -16,7 +17,14 @@ const TrackListScreen = ({ navigation }) => {
         renderItem={({ item }) => {
           return (
             <TouchableOpacity onPress={() => navigation.navigate('TrackDetail', { _id: item._id })}>
-              <ListItem chevron title={item.name} />
+              <ListItem 
+                title={item.name} 
+                subtitle={`${item.locations.length} location points`} 
+                subtitleStyle={{ color: 'grey' }}
+                leftIcon={<MaterialIcons name="directions-walk" size={30} />}
+                chevron 
+                bottomDivider 
+              />
             </TouchableOpacity>
           );
         }}
@@ -26,8 +34,8 @@ const TrackListScreen = ({ navigation }) => {
 };
 
 TrackListScreen.navigationOptions = {
-  title: 'Tracks'
-}
+  title: 'Tracks',
+};
 
 const styles = StyleSheet.create({});
 
